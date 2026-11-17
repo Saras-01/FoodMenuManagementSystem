@@ -7,9 +7,10 @@ using FoodMenuAPI.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Register Controllers
 builder.Services.AddControllers();
+
+// Configure CORS for Angular
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AngularClient", policy =>
@@ -19,28 +20,33 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
-// Register Repository
-builder.Services.AddScoped<IFoodItemRepository, FoodItemRepository>();
 
-// Register Service
+// Register FoodItem Repository and Service
+builder.Services.AddScoped<IFoodItemRepository, FoodItemRepository>();
 builder.Services.AddScoped<IFoodItemService, FoodItemService>();
 
-// 2. Register Entity Framework Core and SQL Server
+// Register FoodCategory Repository and Service
+builder.Services.AddScoped<IFoodCategoryRepository, FoodCategoryRepository>();
+builder.Services.AddScoped<IFoodCategoryService, FoodCategoryService>();
+
+// Register Entity Framework Core and SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
+// Register OpenAPI
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
 app.UseHttpsRedirection();
+
 app.UseCors("AngularClient");
 
 app.UseAuthorization();
