@@ -1,0 +1,102 @@
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <!-- Branding -->
+    <div class="brand">
+      <div class="brand-icon">F</div>
+
+      <div>
+        <h2>Food<span>Hub</span></h2>
+        <p>Management System</p>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-section">
+
+      <p class="section-title">MAIN MENU</p>
+
+      <!-- Dashboard -->
+      <a
+        routerLink="/dashboard"
+        routerLinkActive="active"
+        class="nav-item">
+
+        <span class="nav-icon">▦</span>
+        <span>Dashboard</span>
+
+      </a>
+
+      <!-- Food Management -->
+      <a
+        routerLink="/admin"
+        routerLinkActive="active"
+        class="nav-item">
+
+        <span class="nav-icon">🍽</span>
+        <span>Food Management</span>
+
+      </a>
+
+      <!-- Customer Menu -->
+      <a
+        routerLink="/menu"
+        routerLinkActive="active"
+        class="nav-item">
+
+        <span class="nav-icon">☷</span>
+        <span>Customer Menu</span>
+
+      </a>
+
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+
+      <p>Food Menu Management</p>
+      <small>Admin Panel</small>
+
+    </div>
+
+  </aside>
+
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Top Navigation -->
+    <header class="topbar">
+
+      <div class="topbar-heading">
+        <h3>Restaurant Administration</h3>
+        <p>Manage your restaurant menu</p>
+      </div>
+
+      <!-- Admin Profile -->
+      <div class="admin-profile">
+
+        <div class="profile-icon">A</div>
+
+        <div class="profile-details">
+          <strong>Administrator</strong>
+          <small>Admin</small>
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- Dynamic Page Content -->
+    <section class="page-content">
+
+      <router-outlet></router-outlet>
+
+    </section>
+
+  </main>
+
+</div>

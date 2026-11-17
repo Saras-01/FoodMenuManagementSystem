@@ -1,0 +1,171 @@
+<div class="admin-container">
+
+  <div class="dashboard-header">
+    <div>
+      <h1>Food Management</h1>
+      <p>Manage your menu items and availability.</p>
+    </div>
+  </div>
+
+  <!-- Add / Edit Food Form -->
+  <section class="form-card">
+
+    <h2>{{ isEditMode ? 'Edit Food Item' : 'Add New Food Item' }}</h2>
+
+    <form [formGroup]="foodForm" (ngSubmit)="submitForm()">
+
+      <div class="form-group">
+        <label for="name">Food Name</label>
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="Enter food name">
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <input
+          id="category"
+          type="text"
+          formControlName="category"
+          placeholder="Enter category">
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          placeholder="Enter food description">
+        </textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input
+          id="price"
+          type="number"
+          formControlName="price"
+          min="0.01"
+          step="0.01"
+          placeholder="Enter price">
+      </div>
+
+      <div class="checkbox-group">
+        <input
+          id="isAvailable"
+          type="checkbox"
+          formControlName="isAvailable">
+        <label for="isAvailable">Available</label>
+      </div>
+
+      <div class="form-actions">
+
+        <button type="submit" [disabled]="isSaving">
+          {{ isSaving
+            ? 'Saving...'
+            : (isEditMode ? 'Update Food Item' : 'Add Food Item') }}
+        </button>
+
+        <button
+          *ngIf="isEditMode"
+          type="button"
+          class="cancel-button"
+          (click)="resetForm()">
+          Cancel
+        </button>
+
+      </div>
+
+    </form>
+
+    <p class="success-message" *ngIf="successMessage">
+      {{ successMessage }}
+    </p>
+
+    <p class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </p>
+
+  </section>
+
+  <!-- Food Items Table -->
+  <section class="table-card">
+
+    <div class="table-header">
+      <h2>Food Items</h2>
+      <span>Total Items: {{ foodItems.length }}</span>
+    </div>
+
+    <p *ngIf="isLoading" class="loading-message">
+      Loading food items...
+    </p>
+
+    <div class="table-wrapper" *ngIf="!isLoading">
+
+      <table *ngIf="foodItems.length > 0; else emptyMessage">
+
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Food Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Availability</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let item of foodItems">
+
+            <td>{{ item.id }}</td>
+            <td class="food-name">{{ item.name }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.price | currency:'INR':'symbol':'1.2-2' }}</td>
+
+            <td>
+              <span
+                class="status-badge"
+                [class.available]="item.isAvailable"
+                [class.unavailable]="!item.isAvailable">
+                {{ item.isAvailable ? 'Available' : 'Unavailable' }}
+              </span>
+            </td>
+
+            <td class="action-buttons">
+
+              <button
+                type="button"
+                class="edit-button"
+                (click)="editFoodItem(item)">
+                Edit
+              </button>
+
+              <button
+                type="button"
+                class="delete-button"
+                (click)="deleteFoodItem(item.id)">
+                Delete
+              </button>
+
+            </td>
+
+          </tr>
+        </tbody>
+
+      </table>
+
+      <ng-template #emptyMessage>
+        <div class="empty-message">
+          <h3>No food items found</h3>
+          <p>Add a food item using the form above.</p>
+        </div>
+      </ng-template>
+
+    </div>
+
+  </section>
+
+</div>
