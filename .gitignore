@@ -1,0 +1,17 @@
+# Visual Studio
+.vs/
+**/.vs/
+*.user
+*.suo
+
+# .NET generated files
+**/bin/
+**/obj/
+
+# Angular generated files
+**/node_modules/
+**/dist/
+**/.angular/
+
+# IDE
+.idea/
