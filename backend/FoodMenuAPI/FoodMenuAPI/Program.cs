@@ -25,10 +25,6 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IFoodItemRepository, FoodItemRepository>();
 builder.Services.AddScoped<IFoodItemService, FoodItemService>();
 
-// Register FoodCategory Repository and Service
-builder.Services.AddScoped<IFoodCategoryRepository, FoodCategoryRepository>();
-builder.Services.AddScoped<IFoodCategoryService, FoodCategoryService>();
-
 // Register Entity Framework Core and SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(

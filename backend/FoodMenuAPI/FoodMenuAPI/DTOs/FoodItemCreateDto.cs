@@ -1,17 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-public class FoodItemCreateDto
+namespace FoodMenuAPI.DTOs
 {
-    [Required]
-    public string Name { get; set; } = string.Empty;
+    public class FoodItemCreateDto
+    {
+        [Required(ErrorMessage = "Food name is required.")]
+        [StringLength(100, MinimumLength = 2)]
+        public string Name { get; set; } = string.Empty;
 
-    [Required]
-    public string Category { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Food category is required.")]
+        [StringLength(50)]
+        public string Category { get; set; } = string.Empty;
 
-    public string? Description { get; set; }
+        [StringLength(500)]
+        public string? Description { get; set; }
 
-    [Range(0.01, double.MaxValue)]
-    public decimal Price { get; set; }
+        [Range(typeof(decimal), "0.01", "99999999.99")]
+        public decimal Price { get; set; }
 
-    public bool IsAvailable { get; set; } = true;
+        public bool IsAvailable { get; set; } = true;
+    }
 }

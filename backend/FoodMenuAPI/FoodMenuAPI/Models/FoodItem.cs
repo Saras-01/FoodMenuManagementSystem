@@ -14,7 +14,7 @@ namespace FoodMenuAPI.Models
 
         public string? Description { get; set; }
 
-        [Range(0.01, double.MaxValue)]
+        [Range(typeof(decimal), "0.01", "99999999.99")]
         public decimal Price { get; set; }
 
         public bool IsAvailable { get; set; } = true;

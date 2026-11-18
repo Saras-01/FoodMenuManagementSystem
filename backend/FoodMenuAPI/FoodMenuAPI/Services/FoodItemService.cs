@@ -14,46 +14,25 @@ namespace FoodMenuAPI.Services
             _repository = repository;
         }
 
-        // Get all food items
         public async Task<List<FoodItemResponseDto>> GetAllAsync()
         {
             var foodItems = await _repository.GetAllAsync();
 
-            return foodItems.Select(f => new FoodItemResponseDto
-            {
-                Id = f.Id,
-                Name = f.Name,
-                Category = f.Category,
-                Description = f.Description,
-                Price = f.Price,
-                IsAvailable = f.IsAvailable
-            }).ToList();
+            return foodItems.Select(MapToResponseDto).ToList();
         }
 
-        // Get food item by ID
         public async Task<FoodItemResponseDto?> GetByIdAsync(int id)
         {
             var foodItem = await _repository.GetByIdAsync(id);
 
-            if (foodItem == null)
-                return null;
-
-            return new FoodItemResponseDto
-            {
-                Id = foodItem.Id,
-                Name = foodItem.Name,
-                Category = foodItem.Category,
-                Description = foodItem.Description,
-                Price = foodItem.Price,
-                IsAvailable = foodItem.IsAvailable
-            };
+            return foodItem == null ? null : MapToResponseDto(foodItem);
         }
 
-        // Create food item
-        public async Task<FoodItemResponseDto> CreateAsync(
-            FoodItemCreateDto dto)
+        public async Task<FoodItemResponseDto> CreateAsync(FoodItemCreateDto dto)
         {
-            if (await _repository.ExistsByNameAsync(dto.Name))
+            string name = dto.Name.Trim();
+
+            if (await _repository.ExistsByNameAsync(name))
             {
                 throw new InvalidOperationException(
                     "A food item with this name already exists.");
@@ -61,27 +40,18 @@ namespace FoodMenuAPI.Services
 
             var foodItem = new FoodItem
             {
-                Name = dto.Name,
-                Category = dto.Category,
-                Description = dto.Description,
+                Name = name,
+                Category = dto.Category.Trim(),
+                Description = dto.Description?.Trim(),
                 Price = dto.Price,
                 IsAvailable = dto.IsAvailable
             };
 
             await _repository.AddAsync(foodItem);
 
-            return new FoodItemResponseDto
-            {
-                Id = foodItem.Id,
-                Name = foodItem.Name,
-                Category = foodItem.Category,
-                Description = foodItem.Description,
-                Price = foodItem.Price,
-                IsAvailable = foodItem.IsAvailable
-            };
+            return MapToResponseDto(foodItem);
         }
 
-        // Update food item
         public async Task<FoodItemResponseDto?> UpdateAsync(
             int id,
             FoodItemUpdateDto dto)
@@ -89,22 +59,45 @@ namespace FoodMenuAPI.Services
             var foodItem = await _repository.GetByIdAsync(id);
 
             if (foodItem == null)
+            {
                 return null;
+            }
 
-            if (await _repository.ExistsByNameAsync(dto.Name, id))
+            string name = dto.Name.Trim();
+
+            if (await _repository.ExistsByNameAsync(name, id))
             {
                 throw new InvalidOperationException(
                     "Another food item with this name already exists.");
             }
 
-            foodItem.Name = dto.Name;
-            foodItem.Category = dto.Category;
-            foodItem.Description = dto.Description;
+            foodItem.Name = name;
+            foodItem.Category = dto.Category.Trim();
+            foodItem.Description = dto.Description?.Trim();
             foodItem.Price = dto.Price;
             foodItem.IsAvailable = dto.IsAvailable;
 
             await _repository.UpdateAsync(foodItem);
 
+            return MapToResponseDto(foodItem);
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var foodItem = await _repository.GetByIdAsync(id);
+
+            if (foodItem == null)
+            {
+                return false;
+            }
+
+            await _repository.DeleteAsync(foodItem);
+
+            return true;
+        }
+
+        private static FoodItemResponseDto MapToResponseDto(FoodItem foodItem)
+        {
             return new FoodItemResponseDto
             {
                 Id = foodItem.Id,
@@ -114,19 +107,6 @@ namespace FoodMenuAPI.Services
                 Price = foodItem.Price,
                 IsAvailable = foodItem.IsAvailable
             };
-        }
-
-        // Delete food item
-        public async Task<bool> DeleteAsync(int id)
-        {
-            var foodItem = await _repository.GetByIdAsync(id);
-
-            if (foodItem == null)
-                return false;
-
-            await _repository.DeleteAsync(foodItem);
-
-            return true;
         }
     }
 }

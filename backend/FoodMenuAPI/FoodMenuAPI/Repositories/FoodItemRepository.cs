@@ -46,9 +46,7 @@ namespace FoodMenuAPI.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> ExistsByNameAsync(
-    string name,
-    int? excludeId = null)
+        public async Task<bool> ExistsByNameAsync(string name, int? excludeId = null)
         {
             var query = _context.FoodItems
                 .Where(f => f.Name == name);
