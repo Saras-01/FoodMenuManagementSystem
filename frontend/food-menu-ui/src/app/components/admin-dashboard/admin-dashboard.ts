@@ -21,6 +21,7 @@ import { FoodItemService } from '../../services/food-item.service';
 export class AdminDashboard implements OnInit, OnDestroy {
 
   foodForm: FormGroup;
+
   foodItems: FoodItem[] = [];
 
   isSaving = false;
@@ -39,8 +40,8 @@ export class AdminDashboard implements OnInit, OnDestroy {
     private foodItemService: FoodItemService
   ) {
     this.foodForm = this.fb.group({
-      name: ['', Validators.required],
-      category: ['', Validators.required],
+      name: ['', [Validators.required, Validators.minLength(2)]],
+      category: ['', [Validators.required, Validators.maxLength(50)]],
       description: [''],
       price: ['', [Validators.required, Validators.min(0.01)]],
       isAvailable: [true]
@@ -148,7 +149,7 @@ export class AdminDashboard implements OnInit, OnDestroy {
         console.error('Updating error:', error);
 
         this.errorMessage = error.status === 409
-          ? 'Another food item already uses this name.'
+          ? 'A food item with this name already exists.'
           : 'Unable to update food item.';
 
         this.isSaving = false;

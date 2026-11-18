@@ -78,7 +78,9 @@ form {
   font-weight: 650;
 }
 
+/* Input, Select and Textarea */
 .form-group input,
+.form-group select,
 .form-group textarea {
   width: 100%;
   padding: 13px 15px;
@@ -97,12 +99,28 @@ form {
   color: #a0aabc;
 }
 
+/* Focus Styling */
 .form-group input:focus,
+.form-group select:focus,
 .form-group textarea:focus {
   border-color: #4f70e8;
   box-shadow: 0 0 0 3px rgba(79, 112, 232, 0.1);
 }
 
+/* Category Dropdown */
+.form-group select {
+  min-height: 46px;
+  cursor: pointer;
+  appearance: auto;
+}
+
+.form-group select:disabled {
+  background: #f4f6fa;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* Textarea */
 .form-group textarea {
   min-height: 100px;
   resize: vertical;

@@ -7,7 +7,6 @@
     </div>
   </div>
 
-  <!-- Add / Edit Food Form -->
   <section class="form-card">
 
     <h2>{{ isEditMode ? 'Edit Food Item' : 'Add New Food Item' }}</h2>
@@ -29,7 +28,14 @@
           id="category"
           type="text"
           formControlName="category"
-          placeholder="Enter category">
+          placeholder="Enter food category">
+
+        <small
+          class="error-message"
+          *ngIf="foodForm.get('category')?.touched &&
+                 foodForm.get('category')?.invalid">
+          Please enter a category (maximum 50 characters).
+        </small>
       </div>
 
       <div class="form-group">
@@ -61,11 +67,8 @@
       </div>
 
       <div class="form-actions">
-
         <button type="submit" [disabled]="isSaving">
-          {{ isSaving
-            ? 'Saving...'
-            : (isEditMode ? 'Update Food Item' : 'Add Food Item') }}
+          {{ isSaving ? 'Saving...' : (isEditMode ? 'Update Food Item' : 'Add Food Item') }}
         </button>
 
         <button
@@ -75,7 +78,6 @@
           (click)="resetForm()">
           Cancel
         </button>
-
       </div>
 
     </form>
@@ -90,7 +92,6 @@
 
   </section>
 
-  <!-- Food Items Table -->
   <section class="table-card">
 
     <div class="table-header">
@@ -105,7 +106,6 @@
     <div class="table-wrapper" *ngIf="!isLoading">
 
       <table *ngIf="foodItems.length > 0; else emptyMessage">
-
         <thead>
           <tr>
             <th>ID</th>
@@ -119,7 +119,6 @@
 
         <tbody>
           <tr *ngFor="let item of foodItems">
-
             <td>{{ item.id }}</td>
             <td class="food-name">{{ item.name }}</td>
             <td>{{ item.category }}</td>
@@ -135,7 +134,6 @@
             </td>
 
             <td class="action-buttons">
-
               <button
                 type="button"
                 class="edit-button"
@@ -149,12 +147,9 @@
                 (click)="deleteFoodItem(item.id)">
                 Delete
               </button>
-
             </td>
-
           </tr>
         </tbody>
-
       </table>
 
       <ng-template #emptyMessage>
